@@ -11,15 +11,15 @@ btn.addEventListener("click" , (event) =>{
 const input =document.getElementById('main-input');
 const btnTo = document.getElementById('main-button');
 const blockDivs = document.getElementById('div-block');
-let str = '';
+let textInput = '';
 
 input.addEventListener("input" , (event) =>{
-    str = event.target.value;
+    textInput = event.target.value;
 });
 
 btnTo.addEventListener("click" , (event) =>{
     const div = document.createElement('div');
-    div.textContent = str;
+    div.textContent = textInput;
     div.className = 'new-div';
      blockDivs.appendChild(div);
 });
