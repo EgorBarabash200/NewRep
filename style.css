@@ -1,12 +1,15 @@
-h3{
+h3 {
     margin: 0;
 }
-.main-block-div{
+
+.main-block-div {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 10px;
 }
-.main-container-div{
+
+.main-container-div {
     width: 220px;
     padding: 20px;
     display: flex;
@@ -17,12 +20,15 @@ h3{
     background-color: #e7e7b8;
     border-radius: 10px;
 }
-.block-input{
+
+.block-input {
     width: 180px;
 }
 
-.new-div{
+.new-div {
     width: 220px;
+    height: 120px;
+    min-width: 220px;
     background-color: #09cd4e;
     display: flex;
     justify-content: center;
