@@ -15,7 +15,8 @@ h3 {
 
 .main-div {
     background-image: url(./static/picture/website\ background.jpg);
-    background-size: 100%;
+    background-size: cover;
+    background-position: center;
     background-repeat: no-repeat;
     height: 100vh
 }
