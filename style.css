@@ -1,14 +1,17 @@
 body {
     margin: 0;
 }
+
 * {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 14px;
 }
+
 h1 {
     margin: 0;
 }
+
 .main-div {
     background-image: url(./static/picture/website\ background.jpg);
     background-size: cover;
@@ -16,6 +19,7 @@ h1 {
     background-repeat: no-repeat;
     height: 100vh;
 }
+
 .main-str-h1 {
     text-align: center;
     text-decoration: underline;
@@ -23,24 +27,31 @@ h1 {
     font-size: 24px;
     padding: 15px 0px 15px 0px;
 }
+
 .main-one-block-div {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
+
 .main-block-div {
     width: 80%;
     height: 90%;
     min-height: 600px;
     background-color: #ffffff7d;
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     gap: 10px;
     border-radius: 10px;
-    overflow: auto;
+    padding: 0px 15px 0px 15px;
 }
+
+.main-res-container-div::-webkit-scrollbar-thumb {
+    background-color: #047c4c;
+    border-radius: 7px;
+}
+
 .main-container-div {
     width: 300px;
     height: 120px;
@@ -53,21 +64,25 @@ h1 {
     border-radius: 10px;
     margin-top: 30px;
 }
+
 .block-input {
     width: 270px;
 }
+
 .block-select-btn {
     width: 190px;
 }
+
 .main-res-container-div {
-    width: 80%;
+    width: 100%;
     height: 300px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: flex-start;
     overflow: auto;
     gap: 10px;
 }
+
 .new-div {
     width: 220px;
     height: 120px;
@@ -75,7 +90,6 @@ h1 {
     background-color: #09cd4e;
     display: flex;
     justify-content: center;
-    margin-top: 30px;
     padding: 10px;
     border-radius: 10px;
 }
