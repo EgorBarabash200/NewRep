@@ -52,6 +52,9 @@ h1 {
     border-radius: 7px;
 }
 
+.main-res-container-div::-webkit-scrollbar{
+    width: 5px;
+}
 .main-container-div {
     width: 300px;
     height: 120px;
