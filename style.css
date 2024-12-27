@@ -1,18 +1,14 @@
 body {
     margin: 0;
 }
-
 * {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-size: 14px;
 }
-
-h1,
-h3 {
+h1 {
     margin: 0;
 }
-
 .main-div {
     background-image: url(./static/picture/website\ background.jpg);
     background-size: cover;
@@ -20,7 +16,6 @@ h3 {
     background-repeat: no-repeat;
     height: 100vh;
 }
-
 .main-str-h1 {
     text-align: center;
     text-decoration: underline;
@@ -28,16 +23,15 @@ h3 {
     font-size: 24px;
     padding: 15px 0px 15px 0px;
 }
-
 .main-one-block-div {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
-
 .main-block-div {
     width: 80%;
-    height: 600px;
+    height: 90%;
+    min-height: 600px;
     background-color: #ffffff7d;
     display: flex;
     flex-direction: row;
@@ -47,24 +41,33 @@ h3 {
     border-radius: 10px;
     overflow: auto;
 }
-
 .main-container-div {
-    width: 220px;
-    height: 100px;
+    width: 300px;
+    height: 120px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
-    background-color: #e7e7b8;
+    background-color: #047c4c;
     border-radius: 10px;
     margin-top: 30px;
 }
-
 .block-input {
-    width: 180px;
+    width: 270px;
 }
-
+.block-select-btn {
+    width: 190px;
+}
+.main-res-container-div {
+    width: 80%;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: auto;
+    gap: 10px;
+}
 .new-div {
     width: 220px;
     height: 120px;

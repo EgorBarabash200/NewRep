@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,22 +12,26 @@
         rel="stylesheet">
     <title>Employees</title>
 </head>
-
 <body>
     <div class="main-div">
         <h1 class="main-str-h1">Список сотрудников</h1>
         <div class="main-one-block-div">
-            <div id="div-block" class="main-block-div">
+            <div class="main-block-div">
                 <div class="main-container-div">
-                    <h3>Добавить новый блок</h3>
-                    <input class="block-input" id="main-input" placeholder="Введите название карточки">
-                    <button id="main-button">Добавить блок</button>
+                    <input class="block-input" id="main-input" placeholder="Имя">
+                    <input class="block-input" id="main-phone-input" placeholder="Телефон">
+                    <select class="block-select-btn" name="post" id="main-select">
+                        <option>Должность</option>
+                        <option>Сотрудник</option>
+                        <option>Зам.начальника</option>
+                        <option>Начальник</option>
+                    </select>
+                    <button class="block-select-btn" id="main-button">Добавить</button>
                 </div>
+                <div class="main-res-container-div" id="div-block"></div>
             </div>
-
         </div>
     </div>
     <script src="./app.js"></script>
 </body>
-
 </html>
