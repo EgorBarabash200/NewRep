@@ -19,12 +19,12 @@
             <div class="main-block-div">
                 <div class="main-container-div">
                     <input class="block-input" id="main-input" placeholder="Имя">
-                    <input class="block-input" id="main-phone-input" placeholder="Телефон">
+                    <input class="block-input" id="main-phone-input" placeholder="Телефон" type="number">
                     <select class="block-select-btn" name="post" id="main-select">
-                        <option>Должность</option>
-                        <option>Сотрудник</option>
-                        <option>Зам.начальника</option>
-                        <option>Начальник</option>
+                        <option disabled selected hidden>Должность</option>
+                        <option value="green">Сотрудник</option>
+                        <option value="red">Зам.начальника</option>
+                        <option value="yello">Начальник</option>
                     </select>
                     <button class="block-select-btn" id="main-button">Добавить</button>
                 </div>
