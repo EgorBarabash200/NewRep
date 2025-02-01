@@ -7,6 +7,7 @@ let textName = '';
 let textPhone = '';
 let selectColor = '';
 btnTo.disabled = true;
+let date = new Date();
 function btnOpen() {
     if (textName.length > 0 && textPhone.length === 11 && selectColor.length > 0) {
         btnTo.disabled = false;
@@ -41,6 +42,7 @@ btnTo.addEventListener("click", (event) => {
     const pName = document.createElement('p');
     const pPhone = document.createElement('p');
     const pPost = document.createElement('p');
+    const pDate = document.createElement('p');
     pName.textContent = "Имя" + " " + textName;
     pPhone.textContent = "Телефон" + " " + textPhone;
     if (selectColor === 'green') {
@@ -53,8 +55,18 @@ btnTo.addEventListener("click", (event) => {
         container.className = 'yello-div';
         pPost.textContent = "Должность: Начальник";
     }
+    pDate.textContent = String(date.getFullYear()) + '-' + String(date.getMonth() + 1) + '-' 
+    +  String(date.getDate()) + ' ' + String(date.getHours()) + ':' + String(date.getMinutes()) + ':' + String(date.getSeconds());
     blockDivs.appendChild(container);
     container.appendChild(pName);
     container.appendChild(pPhone);
     container.appendChild(pPost);
+    container.appendChild(pDate);
+     const cardObj = {
+        name: textName, 
+        phone: textPhone,
+        worker: selectColor
+    }
+    localStorage.setItem('cards' , JSON.stringify(cardObj));
+    console.log(localStorage.getItem('cards')); 
 });
