@@ -12,7 +12,7 @@ let dataCards = defaultData ? defaultData : [];
 console.log(dataCards);
 function render() {
     blockDivs.innerHTML = '';
-    dataCards.forEach((item) => {
+    dataCards.forEach((item, index) => {
         const container = document.createElement('div');
         const textDiv = document.createElement('div');
         const pName = document.createElement('p');
@@ -48,6 +48,12 @@ function render() {
         textDiv.appendChild(pDate);
         imgDiv.appendChild(redactDiv);
         imgDiv.appendChild(delitDiv);
+
+        delitDiv.addEventListener('click', (event) =>{
+            let delitElement = dataCards.splice(index, 1);
+            localStorage.setItem("cards" , JSON.stringify(dataCards));
+            render();
+        });
     });
 }
 function btnOpen() {
