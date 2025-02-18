@@ -82,35 +82,61 @@ h1 {
     gap: 10px;
 }
 .green-div {
-    width: 220px;
-    height: 140px;
+    width: 290px;
+    height: 180px;
     min-width: 220px;
     background-color: #09cd4e;
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     padding: 10px;
     border-radius: 10px;
 }
 .red-div {
-    width: 220px;
-    height: 140px;
+    width: 290px;
+    height: 180px;
     min-width: 220px;
     background-color: #b41b04;
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     padding: 10px;
     border-radius: 10px;
 }
 .yello-div {
-    width: 220px;
-    height: 140px;
+    width: 290px;
+    height: 180px;
     min-width: 220px;
     background-color: #eddd09;
     display: flex;
     justify-content: center;
-    flex-direction: column;
+    flex-direction: row;
     padding: 10px;
     border-radius: 10px;
+}
+.div-text{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 220px;
+}
+.div-img {
+   display: flex;
+   flex-direction: column ;
+   gap: 120px;
+   margin-left: 40px;
+}
+.redact-div{
+    background-image: url(./static/picture/icons8-редактировать.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 30px;
+    height: 30px;
+}
+.delit-div{
+    background-image: url(./static/picture/icons8-удалить.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 30px;
+    height: 30px;
 }
