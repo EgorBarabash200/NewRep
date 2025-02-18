@@ -12,12 +12,20 @@ let dataCards = defaultData ? defaultData : [];
 console.log(dataCards);
 function render() {
     blockDivs.innerHTML = '';
-    dataCards.forEach((item) => {
+    dataCards.forEach((item, index) => {
         const container = document.createElement('div');
+        const textDiv = document.createElement('div');
         const pName = document.createElement('p');
         const pPhone = document.createElement('p');
         const pPost = document.createElement('p');
         const pDate = document.createElement('p');
+        const imgDiv = document.createElement('div');
+        const redactDiv = document.createElement('div');
+        const delitDiv = document.createElement('div');
+        textDiv.className = 'div-text';
+        imgDiv.className = 'div-img';
+        redactDiv.className = 'redact-div';
+        delitDiv.className = 'delit-div';
         pName.textContent = "Имя" + " " + item.name;
         pPhone.textContent = "Телефон" + " " + item.phone;
         if (item.color === 'green') {
@@ -32,11 +40,21 @@ function render() {
         }
         pDate.textContent = item.date;
         blockDivs.appendChild(container);
-        container.appendChild(pName);
-        container.appendChild(pPhone);
-        container.appendChild(pPost);
-        container.appendChild(pDate);
-    })
+        container.appendChild(textDiv);
+        container.appendChild(imgDiv);
+        textDiv.appendChild(pName);
+        textDiv.appendChild(pPhone);
+        textDiv.appendChild(pPost);
+        textDiv.appendChild(pDate);
+        imgDiv.appendChild(redactDiv);
+        imgDiv.appendChild(delitDiv);
+
+        delitDiv.addEventListener('click', (event) =>{
+            let delitElement = dataCards.splice(index, 1);
+            localStorage.setItem("cards" , JSON.stringify(dataCards));
+            render();
+        });
+    });
 }
 function btnOpen() {
     if (textName.length > 0 && textPhone.length === 11 && selectColor.length > 0) {
