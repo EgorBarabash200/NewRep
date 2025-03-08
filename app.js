@@ -54,7 +54,68 @@ function render() {
             localStorage.setItem("cards" , JSON.stringify(dataCards));
             render();
         });
+        redactDiv.addEventListener('click', (event) =>{
+            redactContainer(container, item);
+        });
     });
+}
+function redactContainer(container, item){
+    container.innerHTML = '';
+    container.style.cssText = `
+        display: flex;
+        flex-direction: column ;
+    `;
+    const containerBtnBlock = document.createElement('div');
+    containerBtnBlock.className = 'container-img-redact'
+    const containerTextBlock = document.createElement('div');
+    containerTextBlock.className = 'container-text-redact'
+    const redactInputName = document.createElement("input"); 
+    redactInputName.type = 'text';
+    redactInputName.placeholder = 'Введите новое имя';
+    redactInputName.className = 'block-input'
+    const redactInputPhone = document.createElement("input"); 
+    redactInputPhone.type = 'number';
+    redactInputPhone.placeholder = 'Введите новый телефон';
+    redactInputPhone.className = 'block-input'
+    const redactBtn = document.createElement('div');
+    redactBtn.className = 'btn-redact'
+    const noRedactBtn = document.createElement('div');
+    noRedactBtn.className = 'btn-no-redact'
+    let redactTextName = '';
+    let redactTextPhone = '';
+    const redactSelect = document.createElement('select');
+    const redactOptions = [
+        {value: 'green', text: 'Сотрудник'},
+        {value: 'red', text: 'Зам.Начальника'},
+        {value: 'yello', text: 'Начальник'}
+    ];
+    redactOptions.forEach(optionData => {
+        const option = document.createElement('option');
+        option.value = optionData.value;
+        option.textContent = optionData.text;
+        redactSelect.appendChild(option);
+      });
+    redactInputName.addEventListener("input", (event) =>{
+        redactTextName = event.target.value;
+    });
+    redactInputPhone.addEventListener("input", (event) =>{
+        redactTextPhone = event.target.value; 
+    });
+   /* redactBtn.addEventListener("click", (event) =>{
+       const redactPname = document.createElement('p');
+       const redactPphone = document.createElement('p');
+       redactPname = "Имя" + redactTextName;
+       redactPphone = "Телефон" + redactTextPhone; 
+       containerTextBlock.appendChild(redactPname);
+       containerTextBlock.appendChild(redactPphone); 
+    }) */
+    container.appendChild(containerBtnBlock);
+    container.appendChild(containerTextBlock);
+    containerBtnBlock.appendChild(redactBtn);
+    containerBtnBlock.appendChild(noRedactBtn);
+    containerTextBlock.appendChild(redactInputName);
+    containerTextBlock.appendChild(redactInputPhone);
+    containerTextBlock.appendChild(redactSelect);
 }
 function btnOpen() {
     if (textName.length > 0 && textPhone.length === 11 && selectColor.length > 0) {
