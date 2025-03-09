@@ -96,18 +96,19 @@ function redactContainer(container, item, index) {
     saveBtn.disabled = true;
     const noSaveBtn = document.createElement('div');
     noSaveBtn.className = 'btn-no-redact'
-    let redactTextName = '';
-    let redactTextPhone = '';
+    let redactTextName = item.name;
+    let redactTextPhone = item.phone;
     const redactSelect = document.createElement('select');
     const redactOptions = [
         { value: 'green', text: 'Сотрудник' },
         { value: 'red', text: 'Зам.Начальника' },
         { value: 'yello', text: 'Начальник' }
     ];
+    redactSelect.className = 'change-label';
     const containerSelect = document.createElement('div');
     containerSelect.className = 'container-select-label';
     containerSelect.textContent = 'Должность:';
-    let redactSelectColor = '';
+    let redactSelectColor = item.color;
     redactOptions.forEach(optionData => {
         const option = document.createElement('option');
         option.value = optionData.value;
