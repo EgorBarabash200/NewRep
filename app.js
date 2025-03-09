@@ -49,17 +49,17 @@ function render() {
         imgDiv.appendChild(redactDiv);
         imgDiv.appendChild(delitDiv);
 
-        delitDiv.addEventListener('click', (event) =>{
-            let delitElement = dataCards.splice(index, 1);
-            localStorage.setItem("cards" , JSON.stringify(dataCards));
+        delitDiv.addEventListener('click', (event) => {
+            dataCards.splice(index, 1);
+            localStorage.setItem("cards", JSON.stringify(dataCards));
             render();
         });
-        redactDiv.addEventListener('click', (event) =>{
-            redactContainer(container, item);
+        redactDiv.addEventListener('click', (event) => {
+            redactContainer(container, item, index);
         });
     });
 }
-function redactContainer(container, item){
+function redactContainer(container, item, index) {
     container.innerHTML = '';
     container.style.cssText = `
         display: flex;
@@ -69,53 +69,110 @@ function redactContainer(container, item){
     containerBtnBlock.className = 'container-img-redact'
     const containerTextBlock = document.createElement('div');
     containerTextBlock.className = 'container-text-redact'
-    const redactInputName = document.createElement("input"); 
+    const containerNameRedact = document.createElement('div');
+    containerNameRedact.className = 'container-npc-text-redact';
+    const containerPhoneRedact = document.createElement('div');
+    containerPhoneRedact.className = 'container-npc-text-redact';
+    const containerSelectRedact = document.createElement('div');
+    containerSelectRedact.className = 'container-npc-text-redact';
+    const redactInputName = document.createElement("input");
     redactInputName.type = 'text';
     redactInputName.placeholder = 'Введите новое имя';
-    redactInputName.className = 'block-input'
-    const redactInputPhone = document.createElement("input"); 
+    redactInputName.className = 'redact-block-input';
+    redactInputName.value = item.name;
+    const containerName = document.createElement('div');
+    containerName.className = 'container-name-label';
+    containerName.textContent = 'Имя:';
+    const redactInputPhone = document.createElement("input");
     redactInputPhone.type = 'number';
     redactInputPhone.placeholder = 'Введите новый телефон';
-    redactInputPhone.className = 'block-input'
-    const redactBtn = document.createElement('div');
-    redactBtn.className = 'btn-redact'
-    const noRedactBtn = document.createElement('div');
-    noRedactBtn.className = 'btn-no-redact'
+    redactInputPhone.className = 'redact-block-input'
+    redactInputPhone.value = item.phone;
+    const containerPhone = document.createElement('div');
+    containerPhone.className = 'container-phone-label';
+    containerPhone.textContent = 'Телефон:';
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'btn-redact'
+    saveBtn.disabled = true;
+    const noSaveBtn = document.createElement('div');
+    noSaveBtn.className = 'btn-no-redact'
     let redactTextName = '';
     let redactTextPhone = '';
     const redactSelect = document.createElement('select');
     const redactOptions = [
-        {value: 'green', text: 'Сотрудник'},
-        {value: 'red', text: 'Зам.Начальника'},
-        {value: 'yello', text: 'Начальник'}
+        { value: 'green', text: 'Сотрудник' },
+        { value: 'red', text: 'Зам.Начальника' },
+        { value: 'yello', text: 'Начальник' }
     ];
+    const containerSelect = document.createElement('div');
+    containerSelect.className = 'container-select-label';
+    containerSelect.textContent = 'Должность:';
+    let redactSelectColor = '';
     redactOptions.forEach(optionData => {
         const option = document.createElement('option');
         option.value = optionData.value;
         option.textContent = optionData.text;
         redactSelect.appendChild(option);
-      });
-    redactInputName.addEventListener("input", (event) =>{
+    });
+    function redactBtnOpen() {
+        if (redactTextName.length > 0 && redactTextPhone.length === 11 && redactSelectColor.length > 0) {
+            saveBtn.disabled = false;
+        } else {
+            saveBtn.disabled = true;
+        }
+    }
+    redactInputName.addEventListener("input", (event) => {
         redactTextName = event.target.value;
+        redactBtnOpen();
     });
-    redactInputPhone.addEventListener("input", (event) =>{
-        redactTextPhone = event.target.value; 
+    redactInputName.addEventListener("keydown", (event) => {
+        if (event.key === ' ') {
+            event.preventDefault();
+        }
     });
-   /* redactBtn.addEventListener("click", (event) =>{
-       const redactPname = document.createElement('p');
-       const redactPphone = document.createElement('p');
-       redactPname = "Имя" + redactTextName;
-       redactPphone = "Телефон" + redactTextPhone; 
-       containerTextBlock.appendChild(redactPname);
-       containerTextBlock.appendChild(redactPphone); 
-    }) */
-    container.appendChild(containerBtnBlock);
+    redactInputPhone.addEventListener("input", (event) => {
+        redactTextPhone = event.target.value;
+        redactBtnOpen();
+    });
+    redactInputPhone.addEventListener("keydown", (event) => {
+        if (event.key === 'e') {
+            event.preventDefault();
+        }
+    });
+    redactSelect.addEventListener("change", (event) => {
+        redactSelectColor = event.target.value;
+        redactBtnOpen();
+    });
+    saveBtn.addEventListener("click", (event) => {
+        let redactDate = new Date();
+        const redactDateString = String(redactDate.getFullYear()) + '-' + String(redactDate.getMonth() + 1) + '-'
+            + String(redactDate.getDate()) + ' ' + String(redactDate.getHours()) + ':' + String(redactDate.getMinutes()) + ':' + String(redactDate.getSeconds());
+        const redactCardObj = {
+            name: redactTextName,
+            phone: redactTextPhone,
+            color: redactSelectColor,
+            date: redactDateString
+        }
+        dataCards[index] = redactCardObj;
+        localStorage.setItem("cards", JSON.stringify(dataCards));
+        render();
+    });
+    noSaveBtn.addEventListener("click", (event) => {
+        render();
+    })
     container.appendChild(containerTextBlock);
-    containerBtnBlock.appendChild(redactBtn);
-    containerBtnBlock.appendChild(noRedactBtn);
-    containerTextBlock.appendChild(redactInputName);
-    containerTextBlock.appendChild(redactInputPhone);
-    containerTextBlock.appendChild(redactSelect);
+    containerTextBlock.appendChild(containerNameRedact);
+    containerTextBlock.appendChild(containerPhoneRedact);
+    containerTextBlock.appendChild(containerSelectRedact);
+    containerNameRedact.appendChild(containerName);
+    containerNameRedact.appendChild(redactInputName);
+    containerPhoneRedact.appendChild(containerPhone);
+    containerPhoneRedact.appendChild(redactInputPhone);
+    containerSelectRedact.appendChild(containerSelect);
+    containerSelectRedact.appendChild(redactSelect);
+    container.appendChild(containerBtnBlock);
+    containerBtnBlock.appendChild(saveBtn);
+    containerBtnBlock.appendChild(noSaveBtn);
 }
 function btnOpen() {
     if (textName.length > 0 && textPhone.length === 11 && selectColor.length > 0) {

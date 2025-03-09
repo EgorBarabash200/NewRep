@@ -144,24 +144,39 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
-    height: 50px;
+    padding-top: 20px;
+    gap: 208px;
 }
 .container-text-redact{
     display: flex;
     flex-direction: column ;
-    gap: 10px;
+    gap: 20px;
+    margin-top: 20px;
 }
 .btn-redact{
-    background-image: url(./static/picture/icons8-галочка\ \(1\).svg);
+    background-image: url(./static/picture/icons8-ок\ \(1\).svg);
     background-repeat: no-repeat;
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
 }
 .btn-no-redact{
-    background-image: url(./static/picture/Delete-80_icon-icons.com_57340.svg);
+    background-image: url(./static/picture/icons8-отмена.svg);
     background-repeat: no-repeat;
     background-size: cover;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
+}
+.container-npc-text-redact{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+.redact-block-input{
+    width: 160px;
+}
+.redact-block-input::-webkit-inner-spin-button,
+.redact-block-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
