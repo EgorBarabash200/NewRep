@@ -133,12 +133,18 @@ h1 {
     width: 30px;
     height: 30px;
 }
+.redact-div:hover{
+    cursor: pointer;
+}
 .delit-div{
     background-image: url(./static/picture/icons8-удалить.svg);
     background-repeat: no-repeat;
     background-size: cover;
     width: 30px;
     height: 30px;
+}
+.delit-div:hover{
+    cursor: pointer;
 }
 .container-img-redact{
     display: flex;
@@ -159,6 +165,11 @@ h1 {
     background-size: cover;
     width: 40px;
     height: 40px;
+    background-color: #faffff00;
+    border: none;
+}
+.btn-redact:hover{
+    cursor: pointer;
 }
 .btn-no-redact{
     background-image: url(./static/picture/icons8-отмена.svg);
@@ -167,10 +178,13 @@ h1 {
     width: 40px;
     height: 40px;
 }
+.btn-no-redact:hover{
+    cursor: pointer;
+}
 .container-npc-text-redact{
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-between;
 }
 .redact-block-input{
     width: 160px;
@@ -179,4 +193,7 @@ h1 {
 .redact-block-input::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+.change-label{
+    width: 168px;
 }
