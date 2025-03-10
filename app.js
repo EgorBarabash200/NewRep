@@ -5,14 +5,61 @@ const btnTo = document.getElementById('main-button');
 const blockDivs = document.getElementById('div-block');
 let textName = '';
 let textPhone = '';
-let selectColor = '';
+let jobPost = '';
 btnTo.disabled = true;
-const defaultData = JSON.parse(localStorage.getItem('cards'));
-let dataCards = defaultData ? defaultData : [];
-console.log(dataCards);
+let dataCards = [];
+function getData(){
+    fetch('http://localhost:8080/task/all' , {
+        method: "GET",
+    }) 
+    .then((respose) => respose.json())
+    .then((res) =>{
+        dataCards = res;
+        render();
+    })
+    .catch((e) => console.log(e));
+}
+function createCard(cardObj){
+    fetch('http://localhost:8080/task',{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(cardObj),
+    })
+    .then((res) =>{
+        getData();
+    })
+    .catch((e) => console.log(e));
+}
+function delitCard(id){
+    fetch(`http://localhost:8080/task/${id}`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+    })
+        .then((res) =>{
+            getData();
+        })
+        .catch((e) => console.log(e));
+    }
+function redactCard(redactCardObj, id){
+    fetch(`http://localhost:8080/task/${id}`,{
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(redactCardObj),
+    })
+    .then((res) =>{
+        getData();
+    })
+    .catch((e) => console.log(e));
+}
 function render() {
     blockDivs.innerHTML = '';
-    dataCards.forEach((item, index) => {
+    dataCards.forEach((item) => {
         const container = document.createElement('div');
         const textDiv = document.createElement('div');
         const pName = document.createElement('p');
@@ -28,17 +75,17 @@ function render() {
         delitDiv.className = 'delit-div';
         pName.textContent = "Имя" + " " + item.name;
         pPhone.textContent = "Телефон" + " " + item.phone;
-        if (item.color === 'green') {
+        if (item.jobPosition === 'employee') {
             container.className = 'green-div';
             pPost.textContent = "Должность: Сотрудник";
-        } else if (item.color === 'red') {
+        } else if (item.jobPosition === 'develop') {
             container.className = 'red-div';
-            pPost.textContent = "Должность: Зам.Начальника";
+            pPost.textContent = "Должность: Девелоп";
         } else {
             container.className = 'yello-div';
-            pPost.textContent = "Должность: Начальник";
+            pPost.textContent = "Должность: Администратор";
         }
-        pDate.textContent = item.date;
+        pDate.textContent = item.createDate;
         blockDivs.appendChild(container);
         container.appendChild(textDiv);
         container.appendChild(imgDiv);
@@ -48,18 +95,15 @@ function render() {
         textDiv.appendChild(pDate);
         imgDiv.appendChild(redactDiv);
         imgDiv.appendChild(delitDiv);
-
         delitDiv.addEventListener('click', (event) => {
-            dataCards.splice(index, 1);
-            localStorage.setItem("cards", JSON.stringify(dataCards));
-            render();
+            delitCard(item.id);
         });
         redactDiv.addEventListener('click', (event) => {
-            redactContainer(container, item, index);
+            redactContainer(container, item);
         });
     });
 }
-function redactContainer(container, item, index) {
+function redactContainer(container, item) {
     container.innerHTML = '';
     container.style.cssText = `
         display: flex;
@@ -100,15 +144,16 @@ function redactContainer(container, item, index) {
     let redactTextPhone = item.phone;
     const redactSelect = document.createElement('select');
     const redactOptions = [
-        { value: 'green', text: 'Сотрудник' },
-        { value: 'red', text: 'Зам.Начальника' },
-        { value: 'yello', text: 'Начальник' }
+        { value: 'employee', text: 'Сотрудник' },
+        { value: 'develop', text: 'Девелоп' },
+        { value: 'admin', text: 'Админинистратор' }
     ];
     redactSelect.className = 'change-label';
     const containerSelect = document.createElement('div');
     containerSelect.className = 'container-select-label';
     containerSelect.textContent = 'Должность:';
-    let redactSelectColor = item.color;
+    let redactJobPost = item.jobPosition;
+    console.log(item.jobPosition);
     redactOptions.forEach(optionData => {
         const option = document.createElement('option');
         option.value = optionData.value;
@@ -116,7 +161,7 @@ function redactContainer(container, item, index) {
         redactSelect.appendChild(option);
     });
     function redactBtnOpen() {
-        if (redactTextName.length > 0 && redactTextPhone.length === 11 && redactSelectColor.length > 0) {
+        if (redactTextName.length > 0 && redactTextPhone.length === 11 && redactJobPost.length > 0) {
             saveBtn.disabled = false;
         } else {
             saveBtn.disabled = true;
@@ -141,7 +186,7 @@ function redactContainer(container, item, index) {
         }
     });
     redactSelect.addEventListener("change", (event) => {
-        redactSelectColor = event.target.value;
+        redactJobPost = event.target.value;
         redactBtnOpen();
     });
     saveBtn.addEventListener("click", (event) => {
@@ -151,15 +196,13 @@ function redactContainer(container, item, index) {
         const redactCardObj = {
             name: redactTextName,
             phone: redactTextPhone,
-            color: redactSelectColor,
-            date: redactDateString
+            jobPosition: redactJobPost,
+            createDate: redactDateString
         }
-        dataCards[index] = redactCardObj;
-        localStorage.setItem("cards", JSON.stringify(dataCards));
-        render();
+        redactCard(redactCardObj, item.id);
     });
     noSaveBtn.addEventListener("click", (event) => {
-        render();
+        getData();
     })
     container.appendChild(containerTextBlock);
     containerTextBlock.appendChild(containerNameRedact);
@@ -176,7 +219,7 @@ function redactContainer(container, item, index) {
     containerBtnBlock.appendChild(noSaveBtn);
 }
 function btnOpen() {
-    if (textName.length > 0 && textPhone.length === 11 && selectColor.length > 0) {
+    if (textName.length > 0 && textPhone.length === 11 && jobPost.length > 0) {
         btnTo.disabled = false;
     } else {
         btnTo.disabled = true;
@@ -201,21 +244,19 @@ inputPhone.addEventListener("keydown", (event) => {
     }
 });
 selectPost.addEventListener("change", (event) => {
-    selectColor = event.target.value;
+    jobPost = event.target.value;
     btnOpen();
 });
 btnTo.addEventListener("click", (event) => {
     let date = new Date();
     const dateString = String(date.getFullYear()) + '-' + String(date.getMonth() + 1) + '-'
         + String(date.getDate()) + ' ' + String(date.getHours()) + ':' + String(date.getMinutes()) + ':' + String(date.getSeconds());
-    const cardObj = {
+     const cardObj = {
         name: textName,
         phone: textPhone,
-        color: selectColor,
-        date: dateString
+        jobPosition: jobPost,
+        createDate: dateString
     }
-    dataCards.push(cardObj);
-    localStorage.setItem('cards', JSON.stringify(dataCards));
-    render();
+    createCard(cardObj);
 });
-render();
+getData();
