@@ -8,54 +8,60 @@ let textPhone = '';
 let jobPost = '';
 btnTo.disabled = true;
 let dataCards = [];
-function getData(){
-    fetch('http://localhost:8080/task/all' , {
-        method: "GET",
-    }) 
-    .then((respose) => respose.json())
-    .then((res) =>{
-        dataCards = res;
-        render();
-    })
-    .catch((e) => console.log(e));
-}
-function createCard(cardObj){
-    fetch('http://localhost:8080/task',{
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(cardObj),
-    })
-    .then((res) =>{
-        getData();
-    })
-    .catch((e) => console.log(e));
-}
-function delitCard(id){
-    fetch(`http://localhost:8080/task/${id}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
-        },
-    })
-        .then((res) =>{
-            getData();
-        })
-        .catch((e) => console.log(e));
+async function getData() {
+    try {
+        const responce = await fetch('http://localhost:8080/task/all', {
+            method: "GET",
+        });
+        if (responce) {
+            const data = await responce.json();
+            dataCards = data;
+            render()
+        }
+    } catch (error) {
+        console.log(error);
     }
-function redactCard(redactCardObj, id){
-    fetch(`http://localhost:8080/task/${id}`,{
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(redactCardObj),
-    })
-    .then((res) =>{
-        getData();
-    })
-    .catch((e) => console.log(e));
+}
+async function createCard(cardObj) {
+    try {
+        await fetch('http://localhost:8080/task', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(cardObj),
+        });
+        await getData();
+    } catch (error) {
+        console.log(error);
+    }
+}
+async function delitCard(id) {
+    try {
+        await fetch(`http://localhost:8080/task/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+        await getData();
+    } catch (error) {
+        console.log(error);
+    }
+}
+async function redactCard(redactCardObj, id) {
+    try {
+        await fetch(`http://localhost:8080/task/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(redactCardObj),
+        });
+        await getData();
+    } catch (error) {
+        console.log(error);
+    }
 }
 function render() {
     blockDivs.innerHTML = '';
@@ -251,7 +257,7 @@ btnTo.addEventListener("click", (event) => {
     let date = new Date();
     const dateString = String(date.getFullYear()) + '-' + String(date.getMonth() + 1) + '-'
         + String(date.getDate()) + ' ' + String(date.getHours()) + ':' + String(date.getMinutes()) + ':' + String(date.getSeconds());
-     const cardObj = {
+    const cardObj = {
         name: textName,
         phone: textPhone,
         jobPosition: jobPost,
