@@ -13,8 +13,8 @@ async function getData() {
         const responce = await fetch('http://localhost:8080/task/all', {
             method: "GET",
         });
-        const data = await responce.json();
-        if (data) {
+        if (responce) {
+            const data = await responce.json();
             dataCards = data;
             render()
         }
