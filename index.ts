@@ -6,7 +6,22 @@ const containerBlockDivs = document.getElementById("div-block");
 let textUserName = "";
 let textUserPhone = "";
 let userJobPost = "";
-let newDataCards = [];
+let newDataCards:IUserCardData[] = []; // Array<IUserCardData>
+
+interface IUserCardData {
+    id: number; 
+    name: string;
+    phone: string;
+    jobPosition: string;
+    createDate: string;
+}
+
+interface ICardCreate { 
+    name: string;
+    phone: string;
+    jobPosition: string;
+}
+
 if(btnTo){
     if('disabled' in btnTo){
         btnTo.disabled = true;
@@ -19,7 +34,7 @@ async function dataGetCards() {
             method: "GET",
         });
         if (responce) {
-            const data = await responce.json();
+            const data:Array<IUserCardData> = await responce.json();
             newDataCards = data;
             renderingCard();
         }
@@ -27,7 +42,7 @@ async function dataGetCards() {
         console.log(error);
     }
 }
-async function createPostCard(cardObj) {
+async function createPostCard(cardObj: ICardCreate) {
     try {
         await fetch("http://localhost:8080/task", {
             method: "POST",
@@ -41,7 +56,7 @@ async function createPostCard(cardObj) {
         console.log(error);
     }
 }
-async function dataDeleteCard(id) {
+async function dataDeleteCard(id: number) {
     try {
         await fetch(`http://localhost:8080/task/${id}`, {
             method: "DELETE",
@@ -54,7 +69,7 @@ async function dataDeleteCard(id) {
         console.log(error);
     }
 }
-async function redactPutCard(redactCardObj, id) {
+async function redactPutCard(redactCardObj: ICardCreate, id: number) {
     try {
         await fetch(`http://localhost:8080/task/${id}`, {
             method: "PUT",
@@ -72,14 +87,7 @@ function renderingCard() {
     if(containerBlockDivs){
         containerBlockDivs.innerHTML = "";
     }
-    interface UserCardData {
-        id: number; 
-        name: string;
-        phone: string;
-        jobPosition: 'employee' | 'develop';
-        createDate: string;
-    }
-    newDataCards.forEach((item: UserCardData) => {
+    newDataCards.forEach((item: IUserCardData) => {
         const container = document.createElement("div");
         const textDiv = document.createElement("div");
         const pName = document.createElement("p");
@@ -125,7 +133,7 @@ function renderingCard() {
         });
     });
 }
-function redactRendeeringCard(container, item) {
+function redactRendeeringCard(container:HTMLDivElement, item:IUserCardData) {
     container.innerHTML = "";
     container.style.cssText = `
         display: flex;
@@ -193,7 +201,10 @@ function redactRendeeringCard(container, item) {
     }
     redactInputName.addEventListener("input", (event) => {
         const target = event.target as HTMLInputElement | null;
-        redactTextName = target?.value ?? '';
+        // redactTextName = target?.value ?? '';
+        if (target) {
+            redactTextName = target.value; 
+        }
         redactBtnOpen();
     });
     redactInputName.addEventListener("keydown", (event) => {
@@ -203,7 +214,9 @@ function redactRendeeringCard(container, item) {
     });
     redactInputPhone.addEventListener("input", (event) => {
         const target = event.target as HTMLInputElement | null;
-        redactTextPhone = target?.value ?? '';
+        if (target) {
+            redactTextPhone = target.value; 
+        }
         redactBtnOpen();
     });
     redactInputPhone.addEventListener("keydown", (event) => {
@@ -213,7 +226,9 @@ function redactRendeeringCard(container, item) {
     });
     redactSelect.addEventListener("change", (event) => {
         const target = event.target as HTMLInputElement | null;
-        redactJobPost = target?.value ?? '';;
+        if (target) {
+            redactJobPost = target.value; 
+        }
         redactBtnOpen();
     });
     saveBtn.addEventListener("click", () => {
@@ -250,20 +265,23 @@ function buttonOpen() {
 }
 userInputName.addEventListener("input", (event: Event) => {
     const target = event.target as HTMLInputElement | null;
-    textUserName = target?.value ?? '';
+    if (target) {
+        textUserName = target.value; 
+    }
     buttonOpen();
 });
 
 userInputName.addEventListener("keydown", (event: KeyboardEvent) => {
-    const target = event.target as HTMLInputElement | null;
-    if (target?.value?.includes(" ")) {
+    if (event.code === "Space") {
         event.preventDefault();
     }
 });
 
 userInputPhone.addEventListener("input", (event: Event) => {
     const target = event.target as HTMLInputElement | null;
-    textUserPhone = target?.value ?? '';
+    if (target) {
+        textUserPhone = target.value; 
+    }
     buttonOpen();
 });
 
@@ -278,7 +296,9 @@ userInputPhone.addEventListener("keydown", (event: KeyboardEvent) => {
 
 userSelectPost.addEventListener("change", (event: Event) => {
     const target = event.target as HTMLSelectElement | null;
-    userJobPost = target?.value ?? '';
+    if (target) {
+        userJobPost = target.value; 
+    }
     buttonOpen();
 });
 btnTo.addEventListener("click", () => {

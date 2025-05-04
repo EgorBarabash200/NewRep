@@ -42,7 +42,7 @@ var containerBlockDivs = document.getElementById("div-block");
 var textUserName = "";
 var textUserPhone = "";
 var userJobPost = "";
-var newDataCards = [];
+var newDataCards = []; // Array<IUserCardData>
 if (btnTo) {
     if ('disabled' in btnTo) {
         btnTo.disabled = true;
@@ -279,9 +279,11 @@ function redactRendeeringCard(container, item) {
             redactJobPost.length > 0);
     }
     redactInputName.addEventListener("input", function (event) {
-        var _a;
         var target = event.target;
-        redactTextName = (_a = target === null || target === void 0 ? void 0 : target.value) !== null && _a !== void 0 ? _a : '';
+        // redactTextName = target?.value ?? '';
+        if (target) {
+            redactTextName = target.value;
+        }
         redactBtnOpen();
     });
     redactInputName.addEventListener("keydown", function (event) {
@@ -290,9 +292,10 @@ function redactRendeeringCard(container, item) {
         }
     });
     redactInputPhone.addEventListener("input", function (event) {
-        var _a;
         var target = event.target;
-        redactTextPhone = (_a = target === null || target === void 0 ? void 0 : target.value) !== null && _a !== void 0 ? _a : '';
+        if (target) {
+            redactTextPhone = target.value;
+        }
         redactBtnOpen();
     });
     redactInputPhone.addEventListener("keydown", function (event) {
@@ -301,10 +304,10 @@ function redactRendeeringCard(container, item) {
         }
     });
     redactSelect.addEventListener("change", function (event) {
-        var _a;
         var target = event.target;
-        redactJobPost = (_a = target === null || target === void 0 ? void 0 : target.value) !== null && _a !== void 0 ? _a : '';
-        ;
+        if (target) {
+            redactJobPost = target.value;
+        }
         redactBtnOpen();
     });
     saveBtn.addEventListener("click", function () {
@@ -338,22 +341,22 @@ function buttonOpen() {
         userJobPost.length > 0);
 }
 userInputName.addEventListener("input", function (event) {
-    var _a;
     var target = event.target;
-    textUserName = (_a = target === null || target === void 0 ? void 0 : target.value) !== null && _a !== void 0 ? _a : '';
+    if (target) {
+        textUserName = target.value;
+    }
     buttonOpen();
 });
 userInputName.addEventListener("keydown", function (event) {
-    var _a;
-    var target = event.target;
-    if ((_a = target === null || target === void 0 ? void 0 : target.value) === null || _a === void 0 ? void 0 : _a.includes(" ")) {
+    if (event.code === "Space") {
         event.preventDefault();
     }
 });
 userInputPhone.addEventListener("input", function (event) {
-    var _a;
     var target = event.target;
-    textUserPhone = (_a = target === null || target === void 0 ? void 0 : target.value) !== null && _a !== void 0 ? _a : '';
+    if (target) {
+        textUserPhone = target.value;
+    }
     buttonOpen();
 });
 userInputPhone.addEventListener("keydown", function (event) {
@@ -364,9 +367,10 @@ userInputPhone.addEventListener("keydown", function (event) {
     }
 });
 userSelectPost.addEventListener("change", function (event) {
-    var _a;
     var target = event.target;
-    userJobPost = (_a = target === null || target === void 0 ? void 0 : target.value) !== null && _a !== void 0 ? _a : '';
+    if (target) {
+        userJobPost = target.value;
+    }
     buttonOpen();
 });
 btnTo.addEventListener("click", function () {
