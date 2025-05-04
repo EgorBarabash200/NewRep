@@ -1,29 +1,48 @@
-const inputName = document.getElementById("main-input");
-const inputPhone = document.getElementById("main-phone-input");
-const selectPost = document.getElementById("main-select");
-const btnTo = document.getElementById("main-button");
-const blockDivs = document.getElementById("div-block");
-let textName = "";
-let textPhone = "";
-let jobPost = "";
-let dataCards = [];
-btnTo.disabled = true;
-getData();
-async function getData() {
+const userInputName = document.getElementById("main-input") as HTMLInputElement;
+const userInputPhone = document.getElementById("main-phone-input") as HTMLInputElement;
+const userSelectPost = document.getElementById("main-select") as HTMLInputElement;
+const btnTo = document.getElementById("main-button") as HTMLInputElement;
+const containerBlockDivs = document.getElementById("div-block");
+let textUserName = "";
+let textUserPhone = "";
+let userJobPost = "";
+let newDataCards:IUserCardData[] = []; // Array<IUserCardData>
+
+interface IUserCardData {
+    id: number; 
+    name: string;
+    phone: string;
+    jobPosition: string;
+    createDate: string;
+}
+
+interface ICardCreate { 
+    name: string;
+    phone: string;
+    jobPosition: string;
+}
+
+if(btnTo){
+    if('disabled' in btnTo){
+        btnTo.disabled = true;
+    }
+};
+dataGetCards();
+async function dataGetCards() {
     try {
         const responce = await fetch("http://localhost:8080/task/all", {
             method: "GET",
         });
         if (responce) {
-            const data = await responce.json();
-            dataCards = data;
-            render();
+            const data:Array<IUserCardData> = await responce.json();
+            newDataCards = data;
+            renderingCard();
         }
     } catch (error) {
         console.log(error);
     }
 }
-async function createCard(cardObj) {
+async function createPostCard(cardObj: ICardCreate) {
     try {
         await fetch("http://localhost:8080/task", {
             method: "POST",
@@ -32,12 +51,12 @@ async function createCard(cardObj) {
             },
             body: JSON.stringify(cardObj),
         });
-        await getData();
+        await dataGetCards();
     } catch (error) {
         console.log(error);
     }
 }
-async function deleteCard(id) {
+async function dataDeleteCard(id: number) {
     try {
         await fetch(`http://localhost:8080/task/${id}`, {
             method: "DELETE",
@@ -45,12 +64,12 @@ async function deleteCard(id) {
                 "Content-Type": "application/json",
             },
         });
-        await getData();
+        await dataGetCards();
     } catch (error) {
         console.log(error);
     }
 }
-async function redactCard(redactCardObj, id) {
+async function redactPutCard(redactCardObj: ICardCreate, id: number) {
     try {
         await fetch(`http://localhost:8080/task/${id}`, {
             method: "PUT",
@@ -59,14 +78,16 @@ async function redactCard(redactCardObj, id) {
             },
             body: JSON.stringify(redactCardObj),
         });
-        await getData();
+        await dataGetCards();
     } catch (error) {
         console.log(error);
     }
 }
-function render() {
-    blockDivs.innerHTML = "";
-    dataCards.forEach((item) => {
+function renderingCard() {
+    if(containerBlockDivs){
+        containerBlockDivs.innerHTML = "";
+    }
+    newDataCards.forEach((item: IUserCardData) => {
         const container = document.createElement("div");
         const textDiv = document.createElement("div");
         const pName = document.createElement("p");
@@ -93,7 +114,9 @@ function render() {
             pPost.textContent = "Должность: Администратор";
         }
         pDate.textContent = item.createDate;
-        blockDivs.appendChild(container);
+        if(containerBlockDivs){
+            containerBlockDivs.appendChild(container);
+        }
         container.appendChild(textDiv);
         container.appendChild(imgDiv);
         textDiv.appendChild(pName);
@@ -103,14 +126,14 @@ function render() {
         imgDiv.appendChild(redactDiv);
         imgDiv.appendChild(delitDiv);
         delitDiv.addEventListener("click", () => {
-            deleteCard(item.id);
+            dataDeleteCard(item.id);
         });
         redactDiv.addEventListener("click", () => {
-            redactContainer(container, item);
+            redactRendeeringCard(container, item);
         });
     });
 }
-function redactContainer(container, item) {
+function redactRendeeringCard(container:HTMLDivElement, item:IUserCardData) {
     container.innerHTML = "";
     container.style.cssText = `
         display: flex;
@@ -177,7 +200,11 @@ function redactContainer(container, item) {
         );
     }
     redactInputName.addEventListener("input", (event) => {
-        redactTextName = event.target.value;
+        const target = event.target as HTMLInputElement | null;
+        // redactTextName = target?.value ?? '';
+        if (target) {
+            redactTextName = target.value; 
+        }
         redactBtnOpen();
     });
     redactInputName.addEventListener("keydown", (event) => {
@@ -186,7 +213,10 @@ function redactContainer(container, item) {
         }
     });
     redactInputPhone.addEventListener("input", (event) => {
-        redactTextPhone = event.target.value;
+        const target = event.target as HTMLInputElement | null;
+        if (target) {
+            redactTextPhone = target.value; 
+        }
         redactBtnOpen();
     });
     redactInputPhone.addEventListener("keydown", (event) => {
@@ -195,7 +225,10 @@ function redactContainer(container, item) {
         }
     });
     redactSelect.addEventListener("change", (event) => {
-        redactJobPost = event.target.value;
+        const target = event.target as HTMLInputElement | null;
+        if (target) {
+            redactJobPost = target.value; 
+        }
         redactBtnOpen();
     });
     saveBtn.addEventListener("click", () => {
@@ -204,10 +237,10 @@ function redactContainer(container, item) {
             phone: redactTextPhone,
             jobPosition: redactJobPost,
         };
-        redactCard(redactCardObj, item.id);
+        redactPutCard(redactCardObj, item.id);
     });
     noSaveBtn.addEventListener("click", () => {
-        getData();
+        dataGetCards();
     });
     container.appendChild(containerTextBlock);
     containerTextBlock.appendChild(containerNameRedact);
@@ -223,44 +256,56 @@ function redactContainer(container, item) {
     containerBtnBlock.appendChild(saveBtn);
     containerBtnBlock.appendChild(noSaveBtn);
 }
-function btnOpen() {
+function buttonOpen() {
     btnTo.disabled = !(
-        textName.length > 0 &&
-        textPhone.length === 11 &&
-        jobPost.length > 0
+        textUserName.length > 0 &&
+        textUserPhone.length === 11 &&
+        userJobPost.length > 0
     );
 }
-
-inputName.addEventListener("input", (event) => {
-    textName = event.target.value;
-    btnOpen();
+userInputName.addEventListener("input", (event: Event) => {
+    const target = event.target as HTMLInputElement | null;
+    if (target) {
+        textUserName = target.value; 
+    }
+    buttonOpen();
 });
-inputName.addEventListener("keydown", (event) => {
-    if (event.key === " ") {
+
+userInputName.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.code === "Space") {
         event.preventDefault();
     }
 });
-inputPhone.addEventListener("input", (event) => {
-    textPhone = event.target.value;
-    btnOpen();
+
+userInputPhone.addEventListener("input", (event: Event) => {
+    const target = event.target as HTMLInputElement | null;
+    if (target) {
+        textUserPhone = target.value; 
+    }
+    buttonOpen();
 });
-inputPhone.addEventListener("keydown", (event) => {
+
+userInputPhone.addEventListener("keydown", (event: KeyboardEvent) => {
+    const target = event.target as HTMLInputElement | null;
     const listKey = ["e", "+", "-", ".", "E", ",", "ArrowUp", "ArrowDown"];
-    listKey.forEach((item) => {
-        if (item === event.key) {
-            event.preventDefault();
-        }
-    });
+    
+    if (target && listKey.includes(event.key)) {
+        event.preventDefault();
+    }
 });
-selectPost.addEventListener("change", (event) => {
-    jobPost = event.target.value;
-    btnOpen();
+
+userSelectPost.addEventListener("change", (event: Event) => {
+    const target = event.target as HTMLSelectElement | null;
+    if (target) {
+        userJobPost = target.value; 
+    }
+    buttonOpen();
 });
 btnTo.addEventListener("click", () => {
     const cardObj = {
-        name: textName,
-        phone: textPhone,
-        jobPosition: jobPost,
+        name: textUserName,
+        phone: textUserPhone,
+        jobPosition: userJobPost,
     };
-    createCard(cardObj);
+    createPostCard(cardObj);
 });
